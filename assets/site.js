@@ -220,8 +220,8 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     [[1,0,1],[0,1,1],[2,0,2],[0,2,2],[2,2,1],[3,3,1]],
     [[0,0,1],[1,0,2],[3,1,1],[0,2,1],[1,3,1],[2,2,2]]];
   const FOCUS={"dive01":[0.45,0.45],"l03":[0.48,0.55],"l04":[0.5,0.5],"l05":[0.45,0.65],"l07":[0.3,0.35],"l14":[0.4,0.45],"l15":[0.5,0.5],"l16":[0.5,0.5],"l19":[0.5,0.55],"l20":[0.5,0.6],"l21":[0.5,0.45],"l22":[0.5,0.5],"l23":[0.3,0.4],"me":[0.5,0.4],"p08":[0.45,0.5],"p15":[0.55,0.5],"p17":[0.4,0.5],"p20":[0.5,0.5],"p24":[0.5,0.36],"p32":[0.5,0.56],"p33":[0.45,0.35],"p36":[0.4,0.55],"p40":[0.3,0.5],"p48":[0.45,0.35],"p51":[0.5,0.3],"p66":[0.4,0.5],"p67":[0.5,0.5],"p68":[0.5,0.55],"p69":[0.5,0.55],"p70":[0.5,0.55],"p71":[0.5,0.5],"p72":[0.5,0.5],"p73":[0.5,0.5],"p77":[0.55,0.55],"p87":[0.4,0.45],"p88":[0.6,0.45],"pool01":[0.5,0.45],"tv01":[0.4,0.6],"tv02":[0.5,0.6],"tv03":[0.45,0.4],"tv04":[0.6,0.45],"w:p004_0":[0.55,0.55],"w:p013_0":[0.45,0.45],"w:p018_7":[0.5,0.4],"w:p029_0":[0.5,0.5],"w:p035_0":[0.5,0.55],"p25":[0.5,0.45],"p49":[0.5,0.45],"p38":[0.5,0.5],"b_ai":[0.5,0.47],"b_astote":[0.4,0.5],"b_gcgc":[0.5,0.48],"p16":[0.5,0.5]};
-  const url=k=>k==='me'?'assets/brand/me.webp':k.startsWith('w:')?'assets/img/'+k.slice(2)+'.webp':'assets/life/'+k+'.webp';
-  const cache={};const load=k=>k.startsWith('txt:')?Promise.resolve((()=>{const [h,sub,bg]=k.slice(4).split('|');return {txt:true,h,sub,bg};})()):cache[k]||(cache[k]=new Promise(r=>{const im=new Image();im.decoding='async';im.k=k;im.onload=()=>r(im);im.onerror=()=>r(null);im.src=url(k);}));
+  const url=k=>mob?'assets/hm/'+k.replace('w:','w_')+'.webp':k==='me'?'assets/brand/me.webp':k.startsWith('w:')?'assets/img/'+k.slice(2)+'.webp':'assets/life/'+k+'.webp';
+  const cache={};const load=k=>k.startsWith('txt:')?Promise.resolve((()=>{const [h,sub,bg]=k.slice(4).split('|');return {txt:true,h,sub,bg};})()):cache[k]||(cache[k]=new Promise(r=>{const im=new Image();im.decoding='async';im.k=k;im.onload=()=>{(im.decode?im.decode():Promise.resolve()).catch(()=>{}).then(()=>r(im));};im.onerror=()=>r(null);im.src=url(k);}));
   const loadScene=i=>Promise.all(SC[i].im.map(load));
   const role=document.getElementById('role');
   let W=0,H=0,D=1,mob=false,B={},wins=[],si=-1,tpl=0,visible=true,raf=0,timer=0,logo=null;
@@ -272,7 +272,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     if(logo)logo(now);}
   let force=true;const busy=now=>force||logo||wins.some(w=>w.out?now-w.out<760:now-w.t0<(mob?900:6100));
   function loop(now){if(visible&&busy(now)){draw(now);force=false;}raf=requestAnimationFrame(loop);}
-  async function scene(i,instant){clearTimeout(timer);const ims=await loadScene(i);loadScene((i+1)%SC.length);
+  async function scene(i,instant){clearTimeout(timer);const ims=await loadScene(i);setTimeout(()=>loadScene((i+1)%SC.length),1400);
     const now=performance.now();for(const w of wins)if(!w.out)w.out=now;const old=wins.filter(w=>w.out);
     size();si=i;const n=(mob?LM:LD).length;tpl=i===0?0:(tpl+1)%n;
     const sl=slots(ims.length);const t0=now+(old.length?520:0);
@@ -281,7 +281,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     if(role){window.scramble&&!reduce?window.scramble(role,SC[i].t,700):role.textContent=SC[i].t;}
     if(!reduce)timer=setTimeout(()=>scene((si+1)%SC.length),4200);}
   // intro: the eidge logo, as is, on the black stage
-  const logoImg=new Promise(r=>{const im=new Image();im.onload=()=>r(im);im.onerror=()=>r(null);im.src='assets/brand/eidge-lg.png?v=2';});
+  const logoImg=new Promise(r=>{const im=new Image();im.onload=()=>{(im.decode?im.decode():Promise.resolve()).catch(()=>{}).then(()=>r(im));};im.onerror=()=>r(null);im.src='assets/brand/eidge-lg.png?v=2';});
   function edgeLine(e){if(e>1900){logo=null;return;}const a=Math.min(1,e/350)*(1-Math.max(0,Math.min(1,(e-1600)/300)));
     const cs=getComputedStyle(someEl);const t='I push every idea to the Edge';ctx.font='800 100px '+cs.fontFamily;const wd=ctx.measureText(t).width-.04*100*(t.length-1);
     const fs=Math.round(Math.min(W*.86/wd*100,(mob?17:20)*D));ctx.font='700 '+fs+'px '+cs.fontFamily;ctx.textBaseline='middle';const ls=-.01*fs;
@@ -291,7 +291,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
   let lastSz='';addEventListener('resize',()=>{const r=cv.getBoundingClientRect(),k=Math.round(r.width)+'x'+Math.round(r.height);if(k===lastSz)return;lastSz=k;size();if(si>=0){wins=[];scene(si,true);}});
   new IntersectionObserver(es=>{visible=es[0].isIntersecting;},{threshold:0}).observe(cv);
   document.addEventListener('visibilitychange',()=>{visible=!document.hidden;});
-  const start=async()=>{size();await loadScene(0);size();
+  const start=async()=>{size();const first=loadScene(0);if(reduce)await first;
     if(reduce){await scene(0,true);draw(performance.now());HT.classList.remove('hx-intro');return;}
     raf=requestAnimationFrame(loop);
     const li=await logoImg;let L=li?whiteLogo(li):null,Lc=INK;const t0=performance.now();
