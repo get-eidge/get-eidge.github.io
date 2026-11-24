@@ -233,7 +233,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     const avail=big.getBoundingClientRect().width;let fs;
     fs=Math.min(avail*.99/Math.max(wd('Sometimes'),...SC.map(q=>wd(q.t)))*100,innerHeight*(mob?.1:.115));
     someEl.style.fontSize=fs+'px';big.classList.remove('one');}
-  function topOf(sel){const e=document.querySelector(sel);if(!e||getComputedStyle(e).display==='none')return 0;return e.getBoundingClientRect().bottom;}
+  function topOf(sel){const e=document.querySelector(sel);if(!e)return -1e9;const b=e.getBoundingClientRect();if(!b.width&&!b.height)return -1e9;return b.bottom;}
   function size(){const r=cv.getBoundingClientRect();D=Math.min(2,devicePixelRatio||1);W=Math.round(r.width*D);H=Math.round(r.height*D);cv.width=W;cv.height=H;force=true;mob=r.width<761||r.width/r.height<.9;
     fitTitle();const m=(r.width<600?16:24),g=(r.width<600?8:14),cap=0;
     const tt=Math.max(topOf('.hx-intro'),topOf('.hx3 .h-edge .word'))-r.top+Math.max(mob?18:24,parseFloat(someEl.style.fontSize||0)*.16);
@@ -289,8 +289,8 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     for(const ch of t){ctx.fillText(ch,x,y);x+=ctx.measureText(ch).width+ls;}ctx.globalAlpha=1;}
   function whiteLogo(im){const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const g=c.getContext('2d');g.drawImage(im,0,0);g.globalCompositeOperation='source-in';g.fillStyle=INK;g.fillRect(0,0,c.width,c.height);return c;}
   let lastSz='';addEventListener('resize',()=>{const r=cv.getBoundingClientRect(),k=Math.round(r.width)+'x'+Math.round(r.height);if(k===lastSz)return;lastSz=k;size();if(si>=0){wins=[];scene(si,true);}});
-  new IntersectionObserver(es=>{visible=es[0].isIntersecting;},{threshold:0}).observe(cv);
-  document.addEventListener('visibilitychange',()=>{visible=!document.hidden;});
+  new IntersectionObserver(es=>{visible=es[0].isIntersecting;if(visible)force=true;},{threshold:0}).observe(cv);
+  document.addEventListener('visibilitychange',()=>{visible=!document.hidden;if(visible)force=true;});
   const start=async()=>{size();const first=loadScene(0);if(reduce)await first;
     if(reduce){await scene(0,true);draw(performance.now());HT.classList.remove('hx-intro');return;}
     raf=requestAnimationFrame(loop);
