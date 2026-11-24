@@ -553,3 +553,5 @@ html[data-theme="dark"] .hx3{background:#0b0b0b;color:#f2f1ee}
 /* Say hi inside the mobile menu */
 .nav nav .nav-say{display:none}
 @media (max-width:860px){.nav nav .nav-say{display:flex}}
+/* footer: copyright sits on the left on phones */
+@media (max-width:760px){.foot-links span{margin-left:0;flex-basis:100%}}
