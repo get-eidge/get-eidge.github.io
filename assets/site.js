@@ -198,7 +198,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     try{localStorage.setItem('eidge-theme',d?'dark':'light');}catch(e){}sync();clearTimeout(b._t);b._t=setTimeout(()=>H.classList.remove('theme-anim'),600);});})();
 })();
 // hero stage: a strip of photos with one-word captions (editorial agency layout), big title along the bottom
-(function(){const cv=document.getElementById('hxBg');if(!cv)return;const ctx=cv.getContext('2d');const HT=document.documentElement;
+(function(){const cv=document.getElementById('hxBg');if(!cv)return;let ctx=cv.getContext('2d');const HT=document.documentElement;
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const SC=[
     {t:'Brand builder',im:['me','b_ai','b_astote','b_gcgc','w:p029_0','w:p018_7'],c:['that’s me','packaging','identity','merch','digital','campaign']},
@@ -226,7 +226,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
   const role=document.getElementById('role');
   let W=0,H=0,D=1,mob=false,B={},wins=[],si=-1,tpl=0,visible=true,raf=0,timer=0,logo=null;
   let BG='#0b0b0b',INK='#f2f1ee';const pal=()=>{const d=HT.getAttribute('data-theme')==='dark';BG=d?'#0b0b0b':'#ffffff';INK=d?'#f2f1ee':'#0e0e0e';};pal();
-  new MutationObserver(()=>{pal();if(si>=0&&!raf)draw(performance.now());}).observe(HT,{attributes:true,attributeFilter:['data-theme']});
+  new MutationObserver(()=>{pal();force=true;}).observe(HT,{attributes:true,attributeFilter:['data-theme']});
   const mc=document.createElement('canvas').getContext('2d');
   const big=document.querySelector('.hx3 .h-big'),someEl=document.getElementById('some');
   function fitTitle(){if(!big)return;const cs=getComputedStyle(someEl);mc.font=cs.fontWeight+' 100px '+cs.fontFamily;const ls=-.055*100;const wd=x=>mc.measureText(x).width+ls*x.length;
@@ -234,7 +234,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     fs=Math.min(avail*.99/Math.max(wd('Sometimes'),...SC.map(q=>wd(q.t)))*100,innerHeight*(mob?.1:.115));
     someEl.style.fontSize=fs+'px';big.classList.remove('one');}
   function topOf(sel){const e=document.querySelector(sel);if(!e||getComputedStyle(e).display==='none')return 0;return e.getBoundingClientRect().bottom;}
-  function size(){const r=cv.getBoundingClientRect();D=Math.min(2,devicePixelRatio||1);W=Math.round(r.width*D);H=Math.round(r.height*D);cv.width=W;cv.height=H;mob=r.width<761||r.width/r.height<.9;
+  function size(){const r=cv.getBoundingClientRect();D=Math.min(2,devicePixelRatio||1);W=Math.round(r.width*D);H=Math.round(r.height*D);cv.width=W;cv.height=H;force=true;mob=r.width<761||r.width/r.height<.9;
     fitTitle();const m=(r.width<600?16:24),g=(r.width<600?8:14),cap=0;
     const tt=Math.max(topOf('.hx-intro'),topOf('.hx3 .h-edge .word'))-r.top+Math.max(mob?18:24,parseFloat(someEl.style.fontSize||0)*.16);
     if(big)big.style.setProperty('--bt',tt+'px');
@@ -256,7 +256,8 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
   function makeWin(rc,im,label,t0){const [x,y,w,h]=rc;
     const b=Math.max(Math.round(18*D),Math.round(Math.min(w,h)/6));const cols=Math.ceil(w/b),rows=Math.ceil(h/b);const bl=[];
     for(let j=0;j<rows;j++)for(let i=0;i<cols;i++)bl.push({x:i*b,y:j*b,a:Math.random()*520,o:Math.random()*380,f:Math.random()<.7});
-    return {x,y,w,h,b,bl,im,label,t0,out:0};}
+    let bm=null;if(im&&!im.txt){bm=document.createElement('canvas');bm.width=w;bm.height=h;const c0=ctx;ctx=bm.getContext('2d');cover(im,0,0,w,h,1);ctx=c0;}
+    return {x,y,w,h,b,bl,im,bm,label,t0,out:0};}
   function draw(now){ctx.fillStyle=BG;ctx.fillRect(0,0,W,H);
     ctx.font='500 '+Math.round((mob?11:12)*D)+'px Inter, sans-serif';ctx.textAlign='right';ctx.textBaseline='top';
     for(const wv of wins){const e=now-wv.t0;if(e<0)continue;const z=1+Math.min(1,e/6000)*.035;
@@ -264,12 +265,13 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
       for(const k of wv.bl){let on,fl=false;
         if(wv.out){const eo=now-wv.out;on=eo<k.o;fl=k.f&&eo>=k.o-110&&eo<k.o;}else{on=e>k.a+110;fl=k.f&&e>k.a&&e<=k.a+110;}
         if(on&&!fl)ctx.rect(wv.x+k.x,wv.y+k.y,Math.min(wv.b,wv.w-k.x),Math.min(wv.b,wv.h-k.y));if(fl)flash.push(k);}
-      ctx.clip();if(wv.im)cover(wv.im,wv.x,wv.y,wv.w,wv.h,z);ctx.restore();
+      ctx.clip();if(wv.bm){const zz=mob?1:z,dw=wv.w*zz,dh=wv.h*zz;ctx.drawImage(wv.bm,wv.x-(dw-wv.w)/2,wv.y-(dh-wv.h)/2,dw,dh);}else if(wv.im)cover(wv.im,wv.x,wv.y,wv.w,wv.h,z);ctx.restore();
       ctx.fillStyle=INK;for(const k of flash)ctx.fillRect(wv.x+k.x,wv.y+k.y,Math.min(wv.b,wv.w-k.x),Math.min(wv.b,wv.h-k.y));
       const la=wv.out?Math.max(0,1-(now-wv.out)/250):Math.max(0,Math.min(1,(e-450)/350));
       if(false){ctx.globalAlpha=la;ctx.fillStyle=INK;ctx.fillText(wv.label,wv.x+wv.w,wv.y+wv.h+Math.round(6*D));ctx.globalAlpha=1;}}
     if(logo)logo(now);}
-  function loop(now){if(visible)draw(now);raf=requestAnimationFrame(loop);}
+  let force=true;const busy=now=>force||logo||wins.some(w=>w.out?now-w.out<760:now-w.t0<(mob?900:6100));
+  function loop(now){if(visible&&busy(now)){draw(now);force=false;}raf=requestAnimationFrame(loop);}
   async function scene(i,instant){clearTimeout(timer);const ims=await loadScene(i);loadScene((i+1)%SC.length);
     const now=performance.now();for(const w of wins)if(!w.out)w.out=now;const old=wins.filter(w=>w.out);
     size();si=i;const n=(mob?LM:LD).length;tpl=i===0?0:(tpl+1)%n;
@@ -286,7 +288,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     const tw=ctx.measureText(t).width+ls*(t.length-1);let x=(W-tw)/2;const y=H/2;ctx.globalAlpha=a;ctx.fillStyle=INK;ctx.textAlign='left';
     for(const ch of t){ctx.fillText(ch,x,y);x+=ctx.measureText(ch).width+ls;}ctx.globalAlpha=1;}
   function whiteLogo(im){const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const g=c.getContext('2d');g.drawImage(im,0,0);g.globalCompositeOperation='source-in';g.fillStyle=INK;g.fillRect(0,0,c.width,c.height);return c;}
-  addEventListener('resize',()=>{size();if(si>=0){wins=[];scene(si,true);}});
+  let lastSz='';addEventListener('resize',()=>{const r=cv.getBoundingClientRect(),k=Math.round(r.width)+'x'+Math.round(r.height);if(k===lastSz)return;lastSz=k;size();if(si>=0){wins=[];scene(si,true);}});
   new IntersectionObserver(es=>{visible=es[0].isIntersecting;},{threshold:0}).observe(cv);
   document.addEventListener('visibilitychange',()=>{visible=!document.hidden;});
   const start=async()=>{size();await loadScene(0);size();
@@ -302,3 +304,13 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
   cv.parentElement.addEventListener('click',e=>{if(e.target.closest('a,button,.name,#edge'))return;skip();});
   if(someEl)someEl.addEventListener('mouseenter',skip);
 })();
+
+// client marquee: repeat logos so each half is wider than the screen (no gaps on wide displays)
+(function(){const rows=[...document.querySelectorAll('.mq-t')];if(!rows.length)return;
+  rows.forEach(ul=>{const all=[...ul.children];ul._set=all.slice(0,all.length/2).map(li=>li.cloneNode(true));ul._dur=parseFloat(getComputedStyle(ul).animationDuration)||38;});
+  const fill=()=>{rows.forEach(ul=>{const set=ul._set;ul.innerHTML='';set.forEach(li=>ul.appendChild(li.cloneNode(true)));
+    const one=ul.scrollWidth||1;const reps=Math.max(1,Math.ceil((innerWidth+one*0.25)/one));ul.innerHTML='';
+    for(let h=0;h<2;h++)for(let r=0;r<reps;r++)set.forEach(li=>{const c=li.cloneNode(true);if(h||r)c.setAttribute('aria-hidden','true');ul.appendChild(c);});
+    ul.style.animationDuration=(ul._dur*reps)+'s';});};
+  fill();let w=innerWidth;addEventListener('resize',()=>{if(Math.abs(innerWidth-w)<40)return;w=innerWidth;fill();});
+  addEventListener('load',fill);})();

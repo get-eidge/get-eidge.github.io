@@ -550,3 +550,6 @@ html.hx-intro .hx3 .hx-shade{opacity:0}
 .hx3{background:#fff;color:#0e0e0e;transition:background-color .5s,color .5s}
 html[data-theme="dark"] .hx3{background:#0b0b0b;color:#f2f1ee}
 .sayhi{border-radius:999px;padding:6px 14px}
+/* Say hi inside the mobile menu */
+.nav nav .nav-say{display:none}
+@media (max-width:860px){.nav nav .nav-say{display:flex}}
