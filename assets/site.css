@@ -566,7 +566,7 @@ html[data-theme="dark"] .hx3{background:#0b0b0b;color:#f2f1ee}
   .p-hero{aspect-ratio:auto;max-height:none;align-self:stretch;justify-self:stretch}
   .p-hero::before{content:"";display:block;aspect-ratio:var(--ar,1);max-height:calc(100svh - 110px)}
   .p-text{padding-bottom:0}
-  .p-text .p-cols{margin-top:auto;padding-top:28px}
+  .p-text .p-cols{margin-top:28px;padding-top:0}
 }
 @media (min-width:1600px){
   .p-text h1{font-size:clamp(40px,5vw,150px)}
