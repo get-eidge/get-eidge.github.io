@@ -555,3 +555,8 @@ html[data-theme="dark"] .hx3{background:#0b0b0b;color:#f2f1ee}
 @media (max-width:860px){.nav nav .nav-say{display:flex}}
 /* footer: copyright sits on the left on phones */
 @media (max-width:760px){.foot-links span{margin-left:0;flex-basis:100%}}
+/* project cover: keep the image's own proportions (no squeezed strip) */
+.p-intro{align-items:start}
+.p-hero{min-height:0;aspect-ratio:var(--ar,1);max-height:calc(100svh - 110px)}
+@media (max-width:1000px){.p-hero{aspect-ratio:var(--ar,1);max-height:none}}
+.p-hero{justify-self:end;width:100%}@media (max-width:1000px){.p-hero{justify-self:stretch}}
