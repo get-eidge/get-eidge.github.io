@@ -202,7 +202,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const SC=[
     {t:'Brand builder',im:['me','b_ai','b_astote','b_gcgc','w:p029_0','w:p018_7'],c:['that’s me','packaging','identity','merch','digital','campaign']},
-    {t:'AI geek',im:['v:ai_cloud','ai_claude','ai_squig'],c:[]},
+    {t:'Prompt whisperer',im:['v:ai_cloud','ai_claude','ai_squig'],c:[]},
     {t:'Street photographer',im:['p67','p66','p70','p77'],c:[]},
     {t:'History nerd',im:['p32','p24','p08','p15','p17','l03'],c:['old','stone','stories','light','patience','domes']},
     {t:'Collector',im:['p73','l04','p48','l16'],c:[]},
