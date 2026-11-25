@@ -192,7 +192,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
 
 // day / night theme toggle (choice remembered; first visit follows the device setting)
 (function(){const b=document.getElementById('themeBtn');if(!b)return;const H=document.documentElement;
-  const T=['cream','sage','blue'],N={cream:'Cream',sage:'Sage',blue:'Blue'};
+  const T=['cream','blue'],N={cream:'Cream',blue:'Blue'};
   const cur=()=>{const t=H.getAttribute('data-theme');return T.indexOf(t)<0?'cream':t;};
   const sync=()=>{const n=T[(T.indexOf(cur())+1)%T.length];b.querySelector('.tb-t').textContent=N[n];b.dataset.next=n;b.setAttribute('aria-label','Change colour to '+N[n].toLowerCase());};
   if(T.indexOf(H.getAttribute('data-theme'))<0)H.setAttribute('data-theme','cream');sync();
@@ -246,7 +246,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
   const loadScene=i=>Promise.all(SC[i].im.map(load));
   const role=document.getElementById('role');
   let W=0,H=0,D=1,mob=false,B={},wins=[],si=-1,tpl=0,visible=true,raf=0,timer=0,logo=null;
-  let BG='#ece7d9',INK='#0e0e0e';const PAL={cream:'#ece7d9',sage:'#586d51',blue:'#468bbb'};const pal=()=>{BG=PAL[HT.getAttribute('data-theme')]||PAL.cream;INK='#0e0e0e';};pal();
+  let BG='#ece7d9',INK='#0e0e0e';const PAL={cream:'#ece7d9',blue:'#468bbb'};const pal=()=>{BG=PAL[HT.getAttribute('data-theme')]||PAL.cream;INK='#0e0e0e';};pal();
   new MutationObserver(()=>{pal();force=true;}).observe(HT,{attributes:true,attributeFilter:['data-theme']});
   const mc=document.createElement('canvas').getContext('2d');
   const big=document.querySelector('.hx3 .h-big'),someEl=document.getElementById('some');
