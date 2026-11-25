@@ -206,7 +206,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     {t:'History nerd',im:['p32','p24','p08','p15','p17','l03'],c:['old','stone','stories','light','patience','domes']},
     {t:'Collector',im:['p73','l04','p48','l16'],c:[]},
     {t:'Calligrapher',im:['l21','l23','l07'],c:[]},
-    {t:'Gallery hopper',im:['p88','p25','p49','p40','l22','p38'],c:['look','feel','colour','texture','steal','portraits']},
+    {t:'Gallery hopper',im:['p88','p25','p40','l22'],c:[]},
     {t:'Part-time fish',im:['dive01','l19','l05'],c:[]}];
   // the user's grid variations: [col, row, size] on 8x3 (desktop) and 4x4 (phone); size 2 = a 2x2 block
   const LD=[
@@ -221,7 +221,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     [[0,0,1],[1,0,2],[3,1,1],[0,2,1],[1,3,1],[2,2,2]]];
   // same grids for scenes with fewer photos: two 2x2 blocks plus small cells, spread across the width
   const LD4=[
-    [[0,0,2],[2,1,1],[3,0,2],[6,1,2]],
+    [[0,0,2],[2,1,1],[4,0,2],[7,1,1]],
     [[0,1,1],[1,0,2],[4,1,2],[7,0,1]],
     [[0,0,1],[2,0,2],[4,1,1],[5,1,2]],
     [[0,1,2],[2,0,1],[3,0,2],[6,1,1]]];
