@@ -621,3 +621,4 @@ html[data-theme] body{background:var(--paper);color:var(--ink)}
 .marks li:hover{background:rgba(14,14,14,.07)}
 .marks li:hover{background:rgba(255,255,255,.14)}
 html[data-theme="cream"] .marks li:hover{background:rgba(255,255,255,.5)}
+.nav.open .logo img{filter:invert(95%) sepia(7%) saturate(353%) hue-rotate(347deg) brightness(97%) contrast(92%)}
