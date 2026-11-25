@@ -616,3 +616,6 @@ html[data-theme] body{background:var(--paper);color:var(--ink)}
 .lightbox{background:var(--paper)}
 @media (max-width:860px){.nav nav,.nav.solid nav{color:#ece7d9}.nav.open{color:#ece7d9}}
 .tb-ic{border-radius:50%}
+/* logo grid: lines and hover follow the colour theme */
+.marks,.marks li{border-color:var(--line,rgba(14,14,14,.16))}
+.marks li:hover{background:rgba(14,14,14,.07)}
