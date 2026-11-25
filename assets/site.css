@@ -619,3 +619,5 @@ html[data-theme] body{background:var(--paper);color:var(--ink)}
 /* logo grid: lines and hover follow the colour theme */
 .marks,.marks li{border-color:var(--line,rgba(14,14,14,.16))}
 .marks li:hover{background:rgba(14,14,14,.07)}
+.marks li:hover{background:rgba(255,255,255,.14)}
+html[data-theme="cream"] .marks li:hover{background:rgba(255,255,255,.5)}
