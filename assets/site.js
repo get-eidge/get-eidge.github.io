@@ -201,12 +201,12 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
 (function(){const cv=document.getElementById('hxBg');if(!cv)return;let ctx=cv.getContext('2d');const HT=document.documentElement;
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const SC=[
-    {t:'Brand builder',im:['me','b_ai','b_astote','b_gcgc','w:p029_0','w:p018_7'],c:['that’s me','packaging','identity','merch','digital','campaign']},
-    {t:'AI buddy',im:['v:ai_cloud','ai_claude','ai_squig'],c:[]},
+    {t:'Brand builder',d:2000,im:['me','b_ai','b_astote','b_gcgc','w:p029_0','w:p018_7'],c:['that’s me','packaging','identity','merch','digital','campaign']},
+    {t:'AI buddy',d:2000,im:['v:ai_cloud','ai_claude','ai_squig'],c:[]},
     {t:'Street photographer',im:['p67','p66','p70','p77'],c:[]},
     {t:'History nerd',im:['p32','p24','p08','p15','p17','l03'],c:['old','stone','stories','light','patience','domes']},
     {t:'Collector',im:['p73','l04','p48','l16'],c:[]},
-    {t:'Calligrapher',im:['l21','l23','l07'],c:[]},
+    {t:'Calligrapher',d:2000,im:['l21','l23','l07'],c:[]},
     {t:'Art snob',im:['p88','l18','p40','l22'],c:[]},
     {t:'Part-time fish',im:['dive01','l19','l05'],c:[]}];
   // the user's grid variations: [col, row, size] on 8x3 (desktop) and 4x4 (phone); size 2 = a 2x2 block
@@ -298,7 +298,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     const nw=sl.map((rc,k)=>makeWin(rc,ims[k],SC[i].c[k],instant?now-5000:t0+k*25));
     wins=old.concat(nw);setTimeout(()=>{wins=wins.filter(w=>!w.out);},420);
     if(role){window.scramble&&!reduce?window.scramble(role,SC[i].t,300):role.textContent=SC[i].t;}
-    if(!reduce)timer=setTimeout(()=>scene((si+1)%SC.length),1000);}
+    if(!reduce)timer=setTimeout(()=>scene((si+1)%SC.length),SC[si].d||1000);}
   // intro: the eidge logo, as is, on the black stage
   const logoImg=new Promise(r=>{const im=new Image();im.onload=()=>{(im.decode?im.decode():Promise.resolve()).catch(()=>{}).then(()=>r(im));};im.onerror=()=>r(null);im.src='assets/brand/eidge-lg.png?v=2';});
   function edgeLine(e){if(e>1900){logo=null;return;}const a=Math.min(1,e/350)*(1-Math.max(0,Math.min(1,(e-1600)/300)));
