@@ -196,6 +196,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
   const cur=()=>{const t=H.getAttribute('data-theme');return T.indexOf(t)<0?'cream':t;};
   const sync=()=>{const n=T[(T.indexOf(cur())+1)%T.length];b.querySelector('.tb-t').textContent=N[n];b.dataset.next=n;b.setAttribute('aria-label','Change colour to '+N[n].toLowerCase());};
   if(T.indexOf(H.getAttribute('data-theme'))<0)H.setAttribute('data-theme','cream');sync();
+  const lg=document.querySelector('.nav .logo');if(lg)lg.addEventListener('click',()=>{try{localStorage.setItem('eidge-theme',b.dataset.next);}catch(e){}});
   b.addEventListener('click',()=>{const n=b.dataset.next;H.classList.add('theme-anim');H.setAttribute('data-theme',n);try{localStorage.setItem('eidge-theme',n);}catch(e){}sync();setTimeout(()=>H.classList.remove('theme-anim'),600);});})();
 })();
 // hero stage: a strip of photos with one-word captions (editorial agency layout), big title along the bottom

@@ -615,3 +615,4 @@ html[data-theme] body{background:var(--paper);color:var(--ink)}
 .theme-btn:hover .tb-ic{transform:none}
 .lightbox{background:var(--paper)}
 @media (max-width:860px){.nav nav,.nav.solid nav{color:#ece7d9}.nav.open{color:#ece7d9}}
+.tb-ic{border-radius:50%}
