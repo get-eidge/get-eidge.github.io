@@ -274,7 +274,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     return out.slice(0,n).filter(Boolean);}
   function makeWin(rc,im,label,t0){const [x,y,w,h]=rc;
     const b=Math.max(Math.round(18*D),Math.round(Math.min(w,h)/6));const cols=Math.ceil(w/b),rows=Math.ceil(h/b);const bl=[];
-    for(let j=0;j<rows;j++)for(let i=0;i<cols;i++)bl.push({x:i*b,y:j*b,a:Math.random()*520,o:Math.random()*380,f:Math.random()<.7});
+    for(let j=0;j<rows;j++)for(let i=0;i<cols;i++)bl.push({x:i*b,y:j*b,a:Math.random()*200,o:Math.random()*150,f:Math.random()<.7});
     let bm=null;if(im&&!im.txt&&!im.vid){bm=document.createElement('canvas');bm.width=w;bm.height=h;const c0=ctx;ctx=bm.getContext('2d');cover(im,0,0,w,h,1);ctx=c0;}
     return {x,y,w,h,b,bl,im,bm,label,t0,out:0};}
   function draw(now){ctx.fillStyle=BG;ctx.fillRect(0,0,W,H);
@@ -282,23 +282,23 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     for(const wv of wins){const e=now-wv.t0;if(e<0)continue;const z=1+Math.min(1,e/6000)*.035;
       ctx.save();ctx.beginPath();let flash=[];
       for(const k of wv.bl){let on,fl=false;
-        if(wv.out){const eo=now-wv.out;on=eo<k.o;fl=k.f&&eo>=k.o-110&&eo<k.o;}else{on=e>k.a+110;fl=k.f&&e>k.a&&e<=k.a+110;}
+        if(wv.out){const eo=now-wv.out;on=eo<k.o;fl=k.f&&eo>=k.o-60&&eo<k.o;}else{on=e>k.a+60;fl=k.f&&e>k.a&&e<=k.a+60;}
         if(on&&!fl)ctx.rect(wv.x+k.x,wv.y+k.y,Math.min(wv.b,wv.w-k.x),Math.min(wv.b,wv.h-k.y));if(fl)flash.push(k);}
       ctx.clip();if(wv.bm){const zz=mob?1:z,dw=wv.w*zz,dh=wv.h*zz;ctx.drawImage(wv.bm,wv.x-(dw-wv.w)/2,wv.y-(dh-wv.h)/2,dw,dh);}else if(wv.im)cover(wv.im,wv.x,wv.y,wv.w,wv.h,z);ctx.restore();
       ctx.fillStyle=INK;for(const k of flash)ctx.fillRect(wv.x+k.x,wv.y+k.y,Math.min(wv.b,wv.w-k.x),Math.min(wv.b,wv.h-k.y));
       const la=wv.out?Math.max(0,1-(now-wv.out)/250):Math.max(0,Math.min(1,(e-450)/350));
       if(false){ctx.globalAlpha=la;ctx.fillStyle=INK;ctx.fillText(wv.label,wv.x+wv.w,wv.y+wv.h+Math.round(6*D));ctx.globalAlpha=1;}}
     if(logo)logo(now);}
-  let force=true;const busy=now=>force||logo||wins.some(w=>!w.out&&w.im&&w.im.vid)||wins.some(w=>w.out?now-w.out<760:now-w.t0<(mob?900:6100));
+  let force=true;const busy=now=>force||logo||wins.some(w=>!w.out&&w.im&&w.im.vid)||wins.some(w=>w.out?now-w.out<420:now-w.t0<(mob?700:6100));
   function loop(now){if(visible&&busy(now)){draw(now);force=false;}raf=requestAnimationFrame(loop);}
-  async function scene(i,instant){clearTimeout(timer);const ims=await loadScene(i);loadScene((i+1)%SC.length);
+  async function scene(i,instant){clearTimeout(timer);const ims=await loadScene(i);loadScene((i+1)%SC.length);loadScene((i+2)%SC.length);
     const now=performance.now();for(const w of wins)if(!w.out)w.out=now;const old=wins.filter(w=>w.out);
     size();si=i;const n=(mob?LM:LD).length;tpl=i===0?0:(tpl+1)%n;
-    const sl=slots(ims.length);const t0=now+(old.length?520:0);
-    const nw=sl.map((rc,k)=>makeWin(rc,ims[k],SC[i].c[k],instant?now-5000:t0+k*130));
-    wins=old.concat(nw);setTimeout(()=>{wins=wins.filter(w=>!w.out);},1000);
-    if(role){window.scramble&&!reduce?window.scramble(role,SC[i].t,700):role.textContent=SC[i].t;}
-    if(!reduce)timer=setTimeout(()=>scene((si+1)%SC.length),4200);}
+    const sl=slots(ims.length);const t0=now+(old.length?160:0);
+    const nw=sl.map((rc,k)=>makeWin(rc,ims[k],SC[i].c[k],instant?now-5000:t0+k*25));
+    wins=old.concat(nw);setTimeout(()=>{wins=wins.filter(w=>!w.out);},420);
+    if(role){window.scramble&&!reduce?window.scramble(role,SC[i].t,300):role.textContent=SC[i].t;}
+    if(!reduce)timer=setTimeout(()=>scene((si+1)%SC.length),1000);}
   // intro: the eidge logo, as is, on the black stage
   const logoImg=new Promise(r=>{const im=new Image();im.onload=()=>{(im.decode?im.decode():Promise.resolve()).catch(()=>{}).then(()=>r(im));};im.onerror=()=>r(null);im.src='assets/brand/eidge-lg.png?v=2';});
   function edgeLine(e){if(e>1900){logo=null;return;}const a=Math.min(1,e/350)*(1-Math.max(0,Math.min(1,(e-1600)/300)));
