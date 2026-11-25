@@ -202,12 +202,12 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const SC=[
     {t:'Brand builder',im:['me','b_ai','b_astote','b_gcgc','w:p029_0','w:p018_7'],c:['that’s me','packaging','identity','merch','digital','campaign']},
-    {t:'Street photographer',im:['p67','p66','p70','p16','p68','p77'],c:['wander','notice','frame','wait','shoot','signs']},
+    {t:'Street photographer',im:['p67','p66','p70','p77'],c:[]},
     {t:'History nerd',im:['p32','p24','p08','p15','p17','l03'],c:['old','stone','stories','light','patience','domes']},
-    {t:'Collector',im:['p73','l04','p36','p48','l16','p72'],c:['find','keep','bargain','polish','treasure','souvenirs']},
-    {t:'Calligrapher',im:['l21','l23','l07','p20','p71','l15'],c:['ink','rhythm','balance','line','breath','letters']},
+    {t:'Collector',im:['p73','l04','p48','l16'],c:[]},
+    {t:'Calligrapher',im:['l21','l23','l07','l15'],c:[]},
     {t:'Gallery hopper',im:['p88','p25','p49','p40','l22','p38'],c:['look','feel','colour','texture','steal','portraits']},
-    {t:'Part-time fish',im:['dive01','l19','reef01','pool01','l20','l05'],c:[]}];
+    {t:'Part-time fish',im:['dive01','l19','l05'],c:[]}];
   // the user's grid variations: [col, row, size] on 8x3 (desktop) and 4x4 (phone); size 2 = a 2x2 block
   const LD=[
     [[0,0,2],[2,0,1],[3,1,1],[4,1,2],[6,1,1],[7,1,1]],
@@ -219,6 +219,24 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     [[0,0,2],[2,0,1],[3,1,1],[0,2,1],[1,3,1],[2,2,2]],
     [[1,0,1],[0,1,1],[2,0,2],[0,2,2],[2,2,1],[3,3,1]],
     [[0,0,1],[1,0,2],[3,1,1],[0,2,1],[1,3,1],[2,2,2]]];
+  // same grids for scenes with fewer photos: two 2x2 blocks plus small cells, spread across the width
+  const LD4=[
+    [[0,0,2],[2,1,1],[3,0,2],[6,1,2]],
+    [[0,1,1],[1,0,2],[4,1,2],[7,0,1]],
+    [[0,0,1],[2,0,2],[4,1,1],[5,1,2]],
+    [[0,1,2],[2,0,1],[3,0,2],[6,1,1]]];
+  const LD3=[
+    [[0,0,2],[3,1,2],[6,0,1]],
+    [[1,0,1],[3,0,2],[5,1,2]],
+    [[0,1,2],[3,0,2],[6,1,1]]];
+  const LM4=[
+    [[0,0,2],[2,0,1],[3,1,1],[1,2,2]],
+    [[0,0,1],[1,0,2],[0,2,2],[3,2,1]],
+    [[2,0,2],[0,0,1],[1,1,1],[0,2,2]]];
+  const LM3=[
+    [[0,0,2],[3,1,1],[1,2,2]],
+    [[2,0,2],[0,1,1],[0,2,2]]];
+  const pool=n=>mob?(n<=3?LM3:n===4?LM4:LM):(n<=3?LD3:n===4?LD4:LD);
   const FOCUS={"dive01":[0.45,0.45],"l03":[0.48,0.55],"l04":[0.5,0.5],"l05":[0.45,0.65],"l07":[0.3,0.35],"l14":[0.4,0.45],"l15":[0.5,0.5],"l16":[0.5,0.5],"l19":[0.5,0.55],"l20":[0.5,0.6],"l21":[0.5,0.45],"l22":[0.5,0.5],"l23":[0.3,0.4],"me":[0.5,0.4],"p08":[0.45,0.5],"p15":[0.55,0.5],"p17":[0.4,0.5],"p20":[0.5,0.5],"p24":[0.5,0.36],"p32":[0.5,0.56],"p33":[0.45,0.35],"p36":[0.4,0.55],"p40":[0.3,0.5],"p48":[0.45,0.35],"p51":[0.5,0.3],"p66":[0.4,0.5],"p67":[0.5,0.5],"p68":[0.5,0.55],"p69":[0.5,0.55],"p70":[0.5,0.55],"p71":[0.5,0.5],"p72":[0.5,0.5],"p73":[0.5,0.5],"p77":[0.55,0.55],"p87":[0.4,0.45],"p88":[0.6,0.45],"pool01":[0.5,0.45],"tv01":[0.4,0.6],"tv02":[0.5,0.6],"tv03":[0.45,0.4],"tv04":[0.6,0.45],"w:p004_0":[0.55,0.55],"w:p013_0":[0.45,0.45],"w:p018_7":[0.5,0.4],"w:p029_0":[0.5,0.5],"w:p035_0":[0.5,0.55],"p25":[0.5,0.45],"p49":[0.5,0.45],"p38":[0.5,0.5],"b_ai":[0.5,0.47],"b_astote":[0.4,0.5],"b_gcgc":[0.5,0.48],"p16":[0.5,0.5]};
   const url=k=>mob?'assets/hm/'+k.replace('w:','w_')+'.webp':k==='me'?'assets/brand/me.webp':k.startsWith('w:')?'assets/img/'+k.slice(2)+'.webp':'assets/life/'+k+'.webp';
   const cache={};const load=k=>k.startsWith('txt:')?Promise.resolve((()=>{const [h,sub,bg]=k.slice(4).split('|');return {txt:true,h,sub,bg};})()):cache[k]||(cache[k]=new Promise(r=>{const im=new Image();im.decoding='async';im.k=k;im.onload=()=>{(im.decode?im.decode():Promise.resolve()).catch(()=>{}).then(()=>r(im));};im.onerror=()=>r(null);im.src=url(k);}));
@@ -247,7 +265,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     let yy=y+p;for(const l of wrap(c.h,fs,w-2*p)){ctx.fillText(l,x+p,yy);yy+=fs*1.02;}
     const fs2=Math.max(11*D,fs*.42);ctx.font='500 '+Math.round(fs2)+'px Inter, sans-serif';const ls=wrap(c.sub,fs2,w-2*p);let y2=y+h-p-ls.length*fs2*1.25;for(const l of ls){ctx.fillText(l,x+p,y2);y2+=fs2*1.25;}}
   function cover(im,x,y,w,h,z){if(im.txt)return card(im,x,y,w,h);const s=Math.max(w/im.width,h/im.height)*z,iw=im.width*s,ih=im.height*s;const f=FOCUS[im.k]||[.5,.5];const ox=Math.min(0,Math.max(w-iw,w/2-f[0]*iw)),oy=Math.min(0,Math.max(h-ih,h/2-f[1]*ih));ctx.drawImage(im,x+ox,y+oy,iw,ih);}
-  function slots(n){const L=(mob?LM:LD)[tpl%(mob?LM:LD).length];const C=mob?4:8,R=mob?4:3;
+  function slots(n){const P=pool(n),L=P[tpl%P.length];const C=mob?4:8,R=mob?4:3;
     const rg=B.g;const cw=(B.w-(C-1)*B.g)/C;const rh=Math.min(cw*1.12,(B.h+B.cap-(R-1)*rg)/R);
     const gw=B.w,gh=R*rh+(R-1)*rg;const oy=B.y;
     const order=L.map((q,k)=>k).sort((a,b)=>L[b][2]-L[a][2]||L[a][0]-L[b][0]);
