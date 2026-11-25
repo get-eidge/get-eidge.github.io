@@ -253,7 +253,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     fs=Math.min(avail*.99/Math.max(wd('Sometimes'),...SC.map(q=>wd(q.t)))*100,innerHeight*(mob?.1:.115));
     someEl.style.fontSize=fs+'px';big.classList.remove('one');}
   function topOf(sel){const e=document.querySelector(sel);if(!e)return -1e9;const b=e.getBoundingClientRect();if(!b.width&&!b.height)return -1e9;return b.bottom;}
-  function size(){const r=cv.getBoundingClientRect();D=Math.min(2,devicePixelRatio||1);W=Math.round(r.width*D);H=Math.round(r.height*D);cv.width=W;cv.height=H;force=true;mob=r.width<761||r.width/r.height<.9;
+  function size(){const r=cv.getBoundingClientRect();D=Math.min((navigator.deviceMemory&&navigator.deviceMemory<=4)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=4)?1.5:2,devicePixelRatio||1);W=Math.round(r.width*D);H=Math.round(r.height*D);cv.width=W;cv.height=H;force=true;mob=r.width<761||r.width/r.height<.9;
     fitTitle();const m=(r.width<600?16:24),g=(r.width<600?8:14),cap=0;
     const tt=Math.max(topOf('.hx-intro'),topOf('.hx3 .h-edge .word'))-r.top+Math.max(mob?18:24,parseFloat(someEl.style.fontSize||0)*.16);
     if(big)big.style.setProperty('--bt',tt+'px');
@@ -291,7 +291,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     if(logo)logo(now);}
   let force=true;const busy=now=>force||logo||wins.some(w=>!w.out&&w.im&&w.im.vid)||wins.some(w=>w.out?now-w.out<760:now-w.t0<(mob?900:6100));
   function loop(now){if(visible&&busy(now)){draw(now);force=false;}raf=requestAnimationFrame(loop);}
-  async function scene(i,instant){clearTimeout(timer);const ims=await loadScene(i);setTimeout(()=>loadScene((i+1)%SC.length),1400);
+  async function scene(i,instant){clearTimeout(timer);const ims=await loadScene(i);loadScene((i+1)%SC.length);
     const now=performance.now();for(const w of wins)if(!w.out)w.out=now;const old=wins.filter(w=>w.out);
     size();si=i;const n=(mob?LM:LD).length;tpl=i===0?0:(tpl+1)%n;
     const sl=slots(ims.length);const t0=now+(old.length?520:0);
