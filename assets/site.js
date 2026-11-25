@@ -192,10 +192,11 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
 
 // day / night theme toggle (choice remembered; first visit follows the device setting)
 (function(){const b=document.getElementById('themeBtn');if(!b)return;const H=document.documentElement;
-  const sync=()=>{const d=H.getAttribute('data-theme')==='dark';b.querySelector('.tb-t').textContent=d?'Day':'Night';b.setAttribute('aria-label',d?'Switch to day mode':'Switch to night mode');b.setAttribute('aria-pressed',d?'true':'false');};
-  sync();
-  b.addEventListener('click',()=>{const d=H.getAttribute('data-theme')!=='dark';H.classList.add('theme-anim');H.setAttribute('data-theme',d?'dark':'light');
-    try{localStorage.setItem('eidge-theme',d?'dark':'light');}catch(e){}sync();clearTimeout(b._t);b._t=setTimeout(()=>H.classList.remove('theme-anim'),600);});})();
+  const T=['cream','sage','blue'],N={cream:'Cream',sage:'Sage',blue:'Blue'};
+  const cur=()=>{const t=H.getAttribute('data-theme');return T.indexOf(t)<0?'cream':t;};
+  const sync=()=>{const n=T[(T.indexOf(cur())+1)%T.length];b.querySelector('.tb-t').textContent=N[n];b.dataset.next=n;b.setAttribute('aria-label','Change colour to '+N[n].toLowerCase());};
+  if(T.indexOf(H.getAttribute('data-theme'))<0)H.setAttribute('data-theme','cream');sync();
+  b.addEventListener('click',()=>{const n=b.dataset.next;H.classList.add('theme-anim');H.setAttribute('data-theme',n);try{localStorage.setItem('eidge-theme',n);}catch(e){}sync();setTimeout(()=>H.classList.remove('theme-anim'),600);});})();
 })();
 // hero stage: a strip of photos with one-word captions (editorial agency layout), big title along the bottom
 (function(){const cv=document.getElementById('hxBg');if(!cv)return;let ctx=cv.getContext('2d');const HT=document.documentElement;
@@ -244,7 +245,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
   const loadScene=i=>Promise.all(SC[i].im.map(load));
   const role=document.getElementById('role');
   let W=0,H=0,D=1,mob=false,B={},wins=[],si=-1,tpl=0,visible=true,raf=0,timer=0,logo=null;
-  let BG='#0b0b0b',INK='#f2f1ee';const pal=()=>{const d=HT.getAttribute('data-theme')==='dark';BG=d?'#0b0b0b':'#ffffff';INK=d?'#f2f1ee':'#0e0e0e';};pal();
+  let BG='#ece7d9',INK='#0e0e0e';const PAL={cream:'#ece7d9',sage:'#586d51',blue:'#468bbb'};const pal=()=>{BG=PAL[HT.getAttribute('data-theme')]||PAL.cream;INK='#0e0e0e';};pal();
   new MutationObserver(()=>{pal();force=true;}).observe(HT,{attributes:true,attributeFilter:['data-theme']});
   const mc=document.createElement('canvas').getContext('2d');
   const big=document.querySelector('.hx3 .h-big'),someEl=document.getElementById('some');
