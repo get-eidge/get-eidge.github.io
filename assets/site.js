@@ -207,7 +207,7 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     {t:'History nerd',im:['p32','p24','p08','p15','p17','l03'],c:['old','stone','stories','light','patience','domes']},
     {t:'Collector',im:['p73','l04','p48','l16'],c:[]},
     {t:'Calligrapher',im:['l21','l23','l07'],c:[]},
-    {t:'Gallery hopper',im:['p88','l18','p40','l22'],c:[]},
+    {t:'Art snob',im:['p88','l18','p40','l22'],c:[]},
     {t:'Part-time fish',im:['dive01','l19','l05'],c:[]}];
   // the user's grid variations: [col, row, size] on 8x3 (desktop) and 4x4 (phone); size 2 = a 2x2 block
   const LD=[
